@@ -262,7 +262,7 @@ class DependentSelectBox extends SelectBox implements ISignalReceiver
 
 			$presenter->payload->dependentselectbox = array(
 				'id' => $this->getHtmlId(),
-				'items' => $items,
+				'items' => $this->prepareItems($items),
 				'value' => $value,
 				'prompt' => $this->getPrompt(),
 				'disabledWhenEmpty' => $this->disabledWhenEmpty,
@@ -273,6 +273,23 @@ class DependentSelectBox extends SelectBox implements ISignalReceiver
 	}
 
 
+	/**
+	 * @param array $items
+	 * @return array
+	 */
+	private function prepareItems($items)
+	{
+		$newItems = array();
+		foreach ($items as $key => $item) {
+			$newItems[] = array(
+				'key' => $key,
+				'value' => $item,
+			);
+		}
+		return $newItems;
+	}
+
+
 	/********************* registration ****************** */
 
 	/**
@@ -280,7 +297,7 @@ class DependentSelectBox extends SelectBox implements ISignalReceiver
 	 */
 	public static function register()
 	{
-		Container::extensionMethod('addDependentSelectBox', callback(__CLASS__, 'addDependentSelectBox'));
+		Container::extensionMethod('addDependentSelectBox', array('NasExt\Forms\Controls\DependentSelectBox', 'addDependentSelectBox'));
 	}
 
 
